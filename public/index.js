@@ -10,6 +10,7 @@ borrar.onclick = () => {
 
   tabla.innerHTML = "";
   pagos.innerHTML = "";
+  calcular.disabled = false;
 };
 
 calcular.onclick = renta = () => {
@@ -17,37 +18,44 @@ calcular.onclick = renta = () => {
   let interes = document.getElementById("interes").value / 100;
   let montoActual = document.getElementById("monto").value;
 
-  let renta = (montoActual * interes) / (1 - Math.pow(1 + interes, -periodos));
+  if (periodos && interes && montoActual) {
+    let renta =
+      (montoActual * interes) / (1 - Math.pow(1 + interes, -periodos));
 
-  periodosPor = periodos * 12;
-  interesEntre = interes / 12;
+    periodosPor = periodos * 12;
+    interesEntre = interes / 12;
 
-  let mensualidades =
-    (montoActual * (interes / 12)) /
-    (1 - Math.pow(interesEntre + 1, -periodosPor));
+    let mensualidades =
+      (montoActual * (interes / 12)) /
+      (1 - Math.pow(interesEntre + 1, -periodosPor));
 
-  pagos.innerHTML = /* html */ `
-    <tr class="border">
-      <td>${roundTo(mensualidades).toLocaleString("en")}</td>
-    </tr>
-  `;
+    if (isNaN(pagos)) {
+      pagos.textContent = "";
+    } else {
+      pagos.textContent = roundTo(mensualidades).toLocaleString("en");
+    }
+    console.log(pagos.value);
 
-  for (let i = 1; i <= periodos; i++) {
-    let interesMonetario = montoActual * interes;
-    let amortizacion = renta - interesMonetario;
-    let saldo = montoActual - amortizacion;
+    for (let i = 1; i <= periodos; i++) {
+      let interesMonetario = montoActual * interes;
+      let amortizacion = renta - interesMonetario;
+      let saldo = montoActual - amortizacion;
 
-    montoActual = saldo;
+      montoActual = saldo;
 
-    tabla.innerHTML += /* html */ `
-      <tr>
-        <td>${i}</td>
-        <td>${roundTo(renta).toLocaleString("en")}</td>
-        <td>${roundTo(interesMonetario).toLocaleString("en")}</td>
-        <td>${roundTo(amortizacion).toLocaleString("en")}</td>
-        <td>${roundTo(saldo).toLocaleString("en")}</td>
-      </tr>
-      `;
+      tabla.innerHTML += /* html */ `
+        <tr>
+          <td>${i}</td>
+          <td>${roundTo(renta).toLocaleString("en")}</td>
+          <td>${roundTo(interesMonetario).toLocaleString("en")}</td>
+          <td>${roundTo(amortizacion).toLocaleString("en")}</td>
+          <td>${roundTo(saldo).toLocaleString("en")}</td>
+        </tr>
+        `;
+    }
+    calcular.disabled = true;
+  } else {
+    alert("Ingresa algunos datos");
   }
 };
 
