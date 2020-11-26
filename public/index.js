@@ -29,12 +29,7 @@ calcular.onclick = renta = () => {
       (montoActual * (interes / 12)) /
       (1 - Math.pow(interesEntre + 1, -periodosPor));
 
-    if (isNaN(pagos)) {
-      pagos.textContent = "";
-    } else {
-      pagos.textContent = roundTo(mensualidades).toLocaleString("en");
-    }
-    console.log(pagos.value);
+    pagos.textContent = roundTo(mensualidades).toLocaleString("en");
 
     for (let i = 1; i <= periodos; i++) {
       let interesMonetario = montoActual * interes;
