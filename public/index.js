@@ -19,8 +19,10 @@ calcular.onclick = renta = () => {
   let montoActual = document.getElementById("monto").value;
 
   if (periodos && interes && montoActual) {
-    let renta =
-      (montoActual * interes) / (1 - Math.pow(1 + interes, -periodos));
+
+    let renta = (montoActual * interes) / (1 - Math.pow(1 + interes, -periodos));
+
+    console.log(`Renta: ${(montoActual * interes)} ${(1 - Math.pow(1 + interes, -periodos))} ${renta}`);
 
     periodosPor = periodos * 12;
     interesEntre = interes / 12;
@@ -28,6 +30,8 @@ calcular.onclick = renta = () => {
     let mensualidades =
       (montoActual * (interes / 12)) /
       (1 - Math.pow(interesEntre + 1, -periodosPor));
+
+      console.log(`Mensualidades: ${(montoActual * (interes / 12))} ${(1 - Math.pow(interesEntre + 1, -periodosPor))}`)
 
     pagos.textContent = roundTo(mensualidades).toLocaleString("en");
 
